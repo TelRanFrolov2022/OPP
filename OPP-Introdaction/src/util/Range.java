@@ -13,7 +13,6 @@ public class Range implements Iterable<Integer> {
 
 		@Override
 		public boolean hasNext() {
-
 			return current < max;
 		}
 

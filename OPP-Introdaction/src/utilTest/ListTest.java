@@ -1,11 +1,18 @@
 package utilTest;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import util.*;
+import util.List;
 
 public abstract class ListTest extends CollectionTest {
 	List<Integer> list;
@@ -98,10 +105,13 @@ public abstract class ListTest extends CollectionTest {
 	@Test
 	@Override
 	void testIterator() {
+		Integer actual[] = new Integer[numbers.length];
 		int index = 0;
-		for (Integer item : list) {
-			assertEquals(numbers[index++], item);
+		Iterator<Integer> it = list.iterator();
+		while(it.hasNext()) {
+			actual[index++] = it.next();
 		}
+		assertArrayEquals(numbers, actual);
+		assertThrowsExactly(NoSuchElementException.class, () -> it.next());
 	}
-
 }

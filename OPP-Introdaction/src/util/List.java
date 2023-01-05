@@ -12,4 +12,13 @@ public interface List<T> extends Collection<T> {
 	T get(int index);
 
 	void set(int index, T element);
+	default void checkIndex(int index, int min, int max) {
+		if (index > max || index < min)
+			throw new IndexOutOfBoundsException("Wrong index");
+	}
+	@Override
+	default boolean contains(T pattern) {
+		
+		return indexOf(pattern) > -1;
+	}
 }

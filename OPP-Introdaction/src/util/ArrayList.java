@@ -171,7 +171,6 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-
 		return new ArrayListIterator();
 	}
 
