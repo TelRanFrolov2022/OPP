@@ -2,25 +2,37 @@ package util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-public class ArrayList<T> implements List<T> {
+public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 	static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
-	private int size;
 
 	private class ArrayListIterator implements Iterator<T> {
-		private int index = 0;
-
+		int current = 0;
+		private boolean fNext;
 		@Override
 		public boolean hasNext() {
-			return index + 1 < size;
 
+			return current < size;
 		}
 
 		@Override
 		public T next() {
-			return array[index++];
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return array[current++];
+		}
+
+		@Override
+		public void remove() {
+			if (!fNext) {
+				throw new IllegalStateException();
+			}
+			fNext = false;
+			ArrayList.this.remove(--current);
 		}
 
 	}
@@ -48,59 +60,19 @@ public class ArrayList<T> implements List<T> {
 	}
 
 	@Override
-	public boolean remove(T pattern) {
-		boolean res = false;
-		int index = indexOf(pattern);
-		if (index > -1) {
-			res = true;
-			remove(index);
-		}
-		return res;
-	}
-
-	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		int translation = 0;
-		for (int i = 0; i < size; i++) {
+		int oldSize = size;
+		int tIndex = 0;
+		for (int i = 0; i < oldSize; i++) {
 			if (predicate.test(array[i])) {
-				translation++;
+				size--;
 			} else {
-				array[i - translation] = array[i];
+				array[tIndex++] = array[i];
 			}
 		}
-		if (translation != 0) {
-			Arrays.fill(array, size - translation, size - 1, null);
-			size -= translation;
-		}
-		return translation != 0;
+		Arrays.fill(array, size, oldSize, null);
+		return oldSize > size;
 
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return size == 0;
-	}
-
-	@Override
-	public int size() {
-
-		return size;
-	}
-
-	@Override
-	public boolean contains(T pattern) {
-
-		return indexOf(pattern) > -1;
-	}
-
-	@Override
-	public T[] toArray(T[] ar) {
-		if (ar.length < size) {
-			ar = Arrays.copyOf(array, size);
-		}
-		System.arraycopy(array, 0, ar, 0, size);
-		Arrays.fill(ar, size, ar.length, null);
-		return ar;
 	}
 
 	@Override
@@ -134,11 +106,6 @@ public class ArrayList<T> implements List<T> {
 		return index < size ? index : -1;
 	}
 
-	private boolean isEqual(T element, T pattern) {
-
-		return element == null ? element == pattern : element.equals(pattern);
-	}
-
 	@Override
 	public int lastIndexOf(T pattern) {
 		int index = size - 1;
@@ -154,14 +121,6 @@ public class ArrayList<T> implements List<T> {
 		return array[index];
 	}
 
-	private void checkIndex(int index, boolean sizeIncluded) {
-		int sizeDelta = sizeIncluded ? 0 : 1;
-		if (index < 0 || index > size - sizeDelta) {
-			throw new IndexOutOfBoundsException(index);
-		}
-
-	}
-
 	@Override
 	public void set(int index, T element) {
 		checkIndex(index, false);
@@ -171,6 +130,7 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
+
 		return new ArrayListIterator();
 	}
 
