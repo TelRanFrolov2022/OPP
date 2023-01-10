@@ -26,7 +26,7 @@ class LinkedListTest extends ListTest{
 		list1.add(1);
 		list1.add(1);
 		assertFalse(list1.hasLoop());
-		list1.setNext(6, 0);
+		list1.setNext(5, 0);
 		assertTrue(list1.hasLoop());
 	}
 }
