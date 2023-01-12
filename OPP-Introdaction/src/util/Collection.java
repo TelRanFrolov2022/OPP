@@ -22,17 +22,17 @@ boolean isEmpty();
 int size();
 boolean contains(T pattern);
 
-public default T[] toArray1(T[] array) {
+default T[] toArray(T[] ar) {
 	int size = size();
-	if (array.length < size) {
-		array = Arrays.copyOf(array, size);
+	if (ar.length < size) {
+		ar = Arrays.copyOf(ar, size);
 	}
-	Iterator<T> temp = iterator();
-	for (int i = 0; i < size; i++) {
-		array[i] = temp.next();
+	int index = 0;
+	for(T obj: this) {
+		ar[index++] = obj;
 	}
-	Arrays.fill(array, size, array.length, null);
-	return array;
+	Arrays.fill(ar, size, ar.length, null);
+	return ar;
 }
 /*******************************/
 /**
