@@ -14,10 +14,11 @@ import org.junit.jupiter.api.Test;
 import util.*;
 
 public abstract class CollectionTest {
-	protected Integer[] numbers = { 10, 100, -5, 134, 280, 120, 15 };
+	protected Integer[] numbers = { 18, 2, -1, 145, 100555, 2055 };
 	protected Integer[] ar = new Integer[numbers.length + 100];
 	protected Collection<Integer> collection;
 	protected Integer[] empty = {};
+	static ArrayList<Integer> list;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -80,6 +81,17 @@ public abstract class CollectionTest {
 			assertNull(ar[i]);
 		}
 
+	}
+	
+	@Test
+	void shuffleArrayTest() {
+		Integer[] expected = { -1, 2, 18, 145, 2055, 100555 };
+		for (int i = 0; i < 100; i++) {
+			Integer[] shuffledArray = list.toArrayShuffling(expected);
+			assertFalse(expected.equals(shuffledArray));
+			Arrays.sort(shuffledArray);
+			assertTrue(expected.equals(shuffledArray));
+		}
 	}
 
 }
