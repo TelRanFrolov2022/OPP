@@ -8,13 +8,6 @@ public abstract class AbstractCollection<T> implements Collection<T> {
 		return element == null ? element == pattern : element.equals(pattern);
 	}
 
-	protected AbstractCollection(Collection<T> collection) {
-		for (T item : collection) {
-			add(item);
-		}
-	}
-	protected AbstractCollection() {
-	};
 	@Override
 	public int size() {
 		return size;

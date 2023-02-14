@@ -1,9 +1,8 @@
 package util;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.function.*;
 import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.function.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -55,9 +54,11 @@ default Stream<T> parallelStream() {
 	return StreamSupport.stream(this.spliterator(), true);
 }
 default T[] toArrayShuffling(T[] array) {
-	Random r = new Random();
-	return stream().sorted((a, b) -> a.hashCode()*(r.nextInt(-array.length, array.length)) - b.hashCode()*(r.nextInt(-array.length, array.length)))
-			            .collect(Collectors.toList()).toArray(array);
-
+	T[] ar1 = toArray(array);
+	T[] res = Arrays.copyOf(ar1, ar1.length);
+	int[] index = {0};
+	new Random().ints(0, res.length).distinct().limit(res.length)
+	.forEach(i -> res[index[0]++] = ar1[i]);
+	return res;
 }
 }
