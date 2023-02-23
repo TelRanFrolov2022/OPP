@@ -14,18 +14,18 @@ public class StackInt {
 		listOfMaxValues = new LinkedList<>();
 	}
 
-	void push(int numиук) {
+	void push(int number) {
 		if (intList.isEmpty()) {
-			listOfMaxValues.offerLast(numиук);
-			max = numиук;
+			listOfMaxValues.offerLast(number);
+			max = number;
 
 		} else {
-			if (numиук > max) {
-				max = numиук;
-				listOfMaxValues.offerLast(numиук);
+			if (number > max) {
+				max = number;
+				listOfMaxValues.offerLast(number);
 			}
 		}
-		intList.add(numиук);
+		intList.add(number);
 	}
 
 	int pop() {
