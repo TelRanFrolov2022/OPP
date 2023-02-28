@@ -40,6 +40,7 @@ public class StackInt {
 		return res;
 	}
 
+	
 	boolean isEmpty() {
 		return this.intList.isEmpty();
 	}
